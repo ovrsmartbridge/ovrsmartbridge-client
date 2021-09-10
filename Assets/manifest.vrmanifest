@@ -1,0 +1,16 @@
+{
+	"source" : "builtin",
+	"applications": [{
+		"app_key": "ovrsmartbridge.ovrsmartbridgeclient",
+		"launch_type": "binary",
+		"binary_path_windows": "OVRSmartBridgeClient.exe",
+		"is_dashboard_overlay": true,
+
+		"strings": {
+			"en_us": {
+				"name": "OVRSmartBridgeClient",
+				"description": "OVRSmartBridgeClient"
+			}
+		}
+	}]
+}
