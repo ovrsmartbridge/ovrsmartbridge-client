@@ -6,6 +6,13 @@ using WebSocketSharp;
 using Valve.VR;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class WSNotifyMessage
+{
+    public string type;
+    public string message;
+}
+
 public class OVRSmartBridgeServer : MonoBehaviour
 {
     public OVR_Handler ovrHandler;
@@ -56,7 +63,12 @@ public class OVRSmartBridgeServer : MonoBehaviour
         ws.OnMessage += (sender, e) =>
         {
             Debug.Log("Message Received from " + ((WebSocket) sender).Url + ", Data : " + e.Data);
-            ShowNotification(e.Data);
+            WSNotifyMessage res = JsonUtility.FromJson<WSNotifyMessage>(e.Data);
+
+            if (res.type == "notify")
+            {
+                ShowNotification(res.message);
+            }
         };
     }
 
@@ -78,29 +90,20 @@ public class OVRSmartBridgeServer : MonoBehaviour
         WSConnect();
     }
 
-    public void SendWebsocketMessage(String message)
-    {
-        if (ws == null)
-        {
-            Debug.Log("Could not send message (websocket not connected): '" + message + "'");
-            return;
-        }
-
-        ws.Send(message);
-    }
-
     public void MyVREventHandler(VREvent_t e)
 	{
         EVREventType type = (EVREventType) e.eventType;
 
         if (type == EVREventType.VREvent_ButtonPress && e.data.controller.button == (uint) EVRButtonId.k_EButton_ProximitySensor)
         {
-            ws.Send("on");
+            ws.Send(@"{""type"":""evrevent"",""context"":""proximity_sensor"",""state"":""on""}");
+            // ws.Send("on");
         }
 
         if (type == EVREventType.VREvent_ButtonUnpress && e.data.controller.button == (uint) EVRButtonId.k_EButton_ProximitySensor)
         {
-            ws.Send("off");
+            ws.Send(@"{""type"":""evrevent"",""context"":""proximity_sensor"",""state"":""off""}");
+            // ws.Send("off");
         }
 
 		// Debug.Log("Captured VR Event: " + type.ToString());
