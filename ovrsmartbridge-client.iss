@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "OVRSmartBridgeClient"
-#define MyAppVersion "0.7.0"
+#define MyAppVersion "0.7.1"
 #define MyAppPublisher "OVRSmartBridge"
 #define MyAppURL "https://github.com/ovrsmartbridge/ovrsmartbridge-client"
 #define MyAppExeName "OVRSmartBridgeClient.exe"
