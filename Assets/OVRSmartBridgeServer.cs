@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using TMPro;
 using System;
 using System.IO;
 using WebSocketSharp;
 using Valve.VR;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 [System.Serializable]
 public class WSNotifyMessage
@@ -46,11 +47,11 @@ public class OVRSmartBridgeServer : MonoBehaviour
         }
     }
 
-    void WSConnect()
+    async void WSConnect()
     {
         ws = new WebSocket("ws://" + PlayerPrefs.GetString("homeassistant_ip") + ":17825");
 
-        ws.Connect();
+        await Task.Run(() => { ws.Connect(); });
 
         if (!ws.IsAlive)
         {
