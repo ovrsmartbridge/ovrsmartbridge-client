@@ -5,6 +5,7 @@ using System.IO;
 using WebSocketSharp;
 using Valve.VR;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 [System.Serializable]
 public class WSNotifyMessage
@@ -46,11 +47,11 @@ public class OVRSmartBridgeServer : MonoBehaviour
         }
     }
 
-    void WSConnect()
+    async void WSConnect()
     {
         ws = new WebSocket("ws://" + PlayerPrefs.GetString("homeassistant_ip") + ":17825");
 
-        ws.Connect();
+        await Task.Run(() => { ws.Connect(); });
 
         if (!ws.IsAlive)
         {
@@ -88,6 +89,18 @@ public class OVRSmartBridgeServer : MonoBehaviour
         ovrHandler.onVREvent += MyVREventHandler;
 
         WSConnect();
+
+        // minimize window at startup
+        #if (!UNITY_EDITOR)
+        try
+        {
+            WindowHelper.minimizeMainWindow();
+        }
+        catch (Exception ex)
+        {
+            // 
+        }
+        #endif
     }
 
     public void MyVREventHandler(VREvent_t e)
