@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using System;
 using System.IO;
@@ -89,6 +89,18 @@ public class OVRSmartBridgeServer : MonoBehaviour
         ovrHandler.onVREvent += MyVREventHandler;
 
         WSConnect();
+
+        // minimize window at startup
+        #if (!UNITY_EDITOR)
+        try
+        {
+            WindowHelper.minimizeMainWindow();
+        }
+        catch (Exception ex)
+        {
+            // 
+        }
+        #endif
     }
 
     public void MyVREventHandler(VREvent_t e)
